@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: expressrestapi
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: expressrestapi
+  template:
+    metadata:
+      labels:
+        app: expressrestapi
+    spec:
+      containers:
+      - name: expressrestapi
+        image: a5hkian/expressrestapi
+        resources:
+          limits:
+            memory: "356Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 3000
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: node-js-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: node-js
+  ports:
+  - port: 3001
+    targetPort: 3000
+    protocol: TCP
